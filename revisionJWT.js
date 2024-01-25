@@ -58,20 +58,38 @@ app.post('/singup',(req,res)=>{
 app.get('/userdata',(req,res)=>{
     const token = req.headers.authorization;
 
-   
-        const decode = jwt.verify(token,'1234')
+        // verify user authentication
+        // const decode = jwt.verify(token,'1234')
+
+        jwt.verify(token, '1234', function(err, decoded) {
+
+            if(err){
+                res.status(403).json({msg:'eroro'})
+            }else{
+
+            
+
+            res.json({msg:userData.filter((value)=>{
+
+                    if(decoded.userEmail == value.userEmail){
+                        return true
+                    }
+     
+             })
+            })
     
-        const user = decode.userEmail
-        console.log(user)
-        res.json({msg:userData.filter((value)=>{
-            if(user == value.userEmail){
-                return true
-            }
+        // const user = decoded.userEmail
+        // res.json({msg:'got it'})
+
+    }
            
-        })
-    })
     
+})
+    
+})
    
 
+
+app.listen(4003,()=>{
+    console.log(`server 4003`)
 })
-app.listen(4002)
